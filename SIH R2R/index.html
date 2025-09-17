@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report2Resolve - Your Report, Our Action</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: #3498db;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #3498db;
+        }
+        
+        /* Page Sections */
+        .page {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #3498db;
+            color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Issue Cards */
+        .issue-card {
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .status-submitted { background-color: #f39c12; color: white; }
+        .status-acknowledged { background-color: #3498db; color: white; }
+        .status-progress { background-color: #9b59b6; color: white; }
+        .status-done { background-color: #2ecc71; color: white; }
+        .status-closed { background-color: #7f8c8d; color: white; }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .stat-card.blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .stat-card.orange { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .stat-card.green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .stat-card.purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        /* Councillor specific styles */
+        .assignment-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .staff-member-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .assignment-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-flag logo-icon"></i>
+                    <h1>Report2Resolve</h1>
+                </div>
+                <nav>
+                    <button class="nav-btn" onclick="showPage('login-page')"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <button class="nav-btn" onclick="showPage('citizen-dashboard')"><i class="fas fa-user"></i> Citizen</button>
+                    <button class="nav-btn" onclick="showPage('staff-dashboard')"><i class="fas fa-hard-hat"></i> Staff</button>
+                    <button class="nav-btn" onclick="showPage('councillor-dashboard')"><i class="fas fa-user-tie"></i> Councillor</button>
+                    <button class="nav-btn" onclick="showPage('admin-dashboard')"><i class="fas fa-chart-line"></i> Admin</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="page active">
+            <div class="card">
+                <h2>Welcome to Report2Resolve</h2>
+                <p>Select your role to continue:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div class="card" style="text-align: center; cursor: pointer;" onclick="login('citizen')">
+                        <i class="fas fa-user" style="font-size: 3rem; color: #3498db; margin-bottom: 15px;"></i>
+                        <h3>Citizen</h3>
+                        <p>Report issues, vote on problems, and track resolutions</p>
+                    </div>
+                    
+                    <div class="card" style="text-align: center; cursor: pointer;" onclick="login('staff')">
+                        <i class="fas fa-hard-hat" style="font-size: 3rem; color: #f39c12; margin-bottom: 15px;"></i>
+                        <h3>Contractor</h3>
+                        <p>Resolve assigned issues and update progress</p>
+                    </div>
+                    
+                    <div class="card" style="text-align: center; cursor: pointer;" onclick="login('councillor')">
+                        <i class="fas fa-user-tie" style="font-size: 3rem; color: #9b59b6; margin-bottom: 15px;"></i>
+                        <h3>Councillor</h3>
+                        <p>Manage staff assignments and ward progress</p>
+                    </div>
+                    
+                    <div class="card" style="text-align: center; cursor: pointer;" onclick="login('admin')">
+                        <i class="fas fa-chart-line" style="font-size: 3rem; color: #2ecc71; margin-bottom: 15px;"></i>
+                        <h3>Admin</h3>
+                        <p>View city analytics and system oversight</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Citizen Dashboard -->
+        <div id="citizen-dashboard" class="page">
+            <h2>Citizen Dashboard</h2>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('report-tab')">New Report</div>
+                <div class="tab" onclick="switchTab('my-reports-tab')">My Reports</div>
+                <div class="tab" onclick="switchTab('city-issues-tab')">City Issues</div>
+                <div class="tab" onclick="switchTab('summary-tab')">Report Summary</div>
+            </div>
+            
+            <!-- New Report Tab -->
+            <div id="report-tab" class="tab-content active">
+                <div class="card">
+                    <h3><i class="fas fa-plus-circle"></i> Report a New Issue</h3>
+                    
+                    <div class="form-group">
+                        <label for="issue-type">Issue Type</label>
+                        <select id="issue-type">
+                            <option value="">Select an issue type</option>
+                            <option value="pothole">Pothole</option>
+                            <option value="garbage">Garbage Accumulation</option>
+                            <option value="streetlight">Streetlight Not Working</option>
+                            <option value="water">Water Leakage</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="issue-location">Location</label>
+                        <input type="text" id="issue-location" placeholder="Enter location or use current location">
+                        <button class="btn" style="margin-top: 10px;" onclick="getLocation()"><i class="fas fa-map-marker-alt"></i> Use My Location</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="issue-description">Description</label>
+                        <textarea id="issue-description" rows="3" placeholder="Please describe the issue in detail"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="issue-photo">Upload Photo</label>
+                        <input type="file" id="issue-photo" accept="image/*">
+                    </div>
+                    
+                    <button class="btn btn-block" onclick="submitReport()"><i class="fas fa-paper-plane"></i> Submit Report</button>
+                </div>
+            </div>
+            
+            <!-- My Reports Tab -->
+            <div id="my-reports-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-list"></i> My Reports</h3>
+                    <p>Here you can see all the reports you've submitted and their current status.</p>
+                    
+                    <div id="my-reports-list">
+                        <!-- Reports will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- City Issues Tab -->
+            <div id="city-issues-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-city"></i> City Issues</h3>
+                    <p>Explore all reported issues in your city.</p>
+                    
+                    <div class="form-group">
+                        <input type="text" placeholder="Search issues...">
+                    </div>
+                    
+                    <div id="city-issues-list">
+                        <!-- City issues will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary Tab -->
+            <div id="summary-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-chart-pie"></i> Report Summary</h3>
+                    <p>Overview of all reports in the system.</p>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card blue">
+                            <i class="fas fa-flag fa-2x"></i>
+                            <div class="stat-number">247</div>
+                            <div>Total Reports</div>
+                        </div>
+                        
+                        <div class="stat-card orange">
+                            <i class="fas fa-clock fa-2x"></i>
+                            <div class="stat-number">83</div>
+                            <div>Pending Resolution</div>
+                        </div>
+                        
+                        <div class="stat-card green">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                            <div class="stat-number">154</div>
+                            <div>Issues Resolved</div>
+                        </div>
+                        
+                        <div class="stat-card purple">
+                            <i class="fas fa-users fa-2x"></i>
+                            <div class="stat-number">10</div>
+                            <div>Your Supported Issues</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin-top: 30px;">Recent Activity</h4>
+                    <div id="recent-activity">
+                        <!-- Recent activity will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Dashboard -->
+        <div id="staff-dashboard" class="page">
+            <h2>Staff Dashboard</h2>
+            
+            <div class="dashboard-grid">
+                <div class="stat-card blue">
+                    <i class="fas fa-list fa-2x"></i>
+                    <div class="stat-number">12</div>
+                    <div>Assigned Tasks</div>
+                </div>
+                
+                <div class="stat-card orange">
+                    <i class="fas fa-hourglass-half fa-2x"></i>
+                    <div class="stat-number">5</div>
+                    <div>In Progress</div>
+                </div>
+                
+                <div class="stat-card green">
+                    <i class="fas fa-check-circle fa-2x"></i>
+                    <div class="stat-number">34</div>
+                    <div>Completed This Month</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-tasks"></i> Your Assigned Tasks</h3>
+                <div id="staff-tasks">
+                    <!-- Tasks will be dynamically added here -->
+                    <div class="issue-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h4>Pothole on Oak Avenue</h4>
+                            <span class="status-badge status-progress">High Priority</span>
+                        </div>
+                        <p><strong>Address:</strong> Oak Avenue near City Park</p>
+                        <p><strong>Reported on:</strong> 2023-09-12</p>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-play-circle"></i> Start Work</button>
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-camera"></i> Upload Photos</button>
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-check-circle"></i> Mark Complete</button>
+                        </div>
+                    </div>
+                    
+                    <div class="issue-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h4>Garbage Collection</h4>
+                            <span class="status-badge status-submitted">Medium Priority</span>
+                        </div>
+                        <p><strong>Address:</strong> 12th Street Block 4</p>
+                        <p><strong>Reported on:</strong> 2023-09-14</p>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-play-circle"></i> Start Work</button>
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-camera"></i> Upload Photos</button>
+                            <button class="btn" style="padding: 8px 15px;"><i class="fas fa-check-circle"></i> Mark Complete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Councillor Dashboard -->
+        <div id="councillor-dashboard" class="page">
+            <h2>Councillor Dashboard</h2>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchCouncillorTab('ward-overview-tab')">Ward Overview</div>
+                <div class="tab" onclick="switchCouncillorTab('assignment-panel-tab')">Assignment Panel</div>
+                <div class="tab" onclick="switchCouncillorTab('budget-tab')">Budget Management</div>
+                <div class="tab" onclick="switchCouncillorTab('staff-management-tab')">Staff Management</div>
+            </div>
+            
+            <!-- Ward Overview Tab -->
+            <div id="ward-overview-tab" class="tab-content active">
+                <div class="card">
+                    <h3><i class="fas fa-chart-bar"></i> Ward Overview</h3>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card blue">
+                            <i class="fas fa-flag fa-2x"></i>
+                            <div class="stat-number">142</div>
+                            <div>Total Reports</div>
+                        </div>
+                        
+                        <div class="stat-card orange">
+                            <i class="fas fa-clock fa-2x"></i>
+                            <div class="stat-number">67</div>
+                            <div>Pending Resolution</div>
+                        </div>
+                        
+                        <div class="stat-card green">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                            <div class="stat-number">75</div>
+                            <div>Issues Resolved</div>
+                        </div>
+                        
+                        <div class="stat-card purple">
+                            <i class="fas fa-money-bill-wave fa-2x"></i>
+                            <div class="stat-number">₹82,500</div>
+                            <div>Budget Used</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Reports by Category</h4>
+                        <div id="reports-by-category">
+                            <div class="form-group">
+                                <label>Potholes (42 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Garbage Accumulation (35 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Streetlight Issues (28 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Water Issues (22 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 55%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Other (15 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Assignment Panel Tab -->
+            <div id="assignment-panel-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-tasks"></i> Assignment Panel</h3>
+                    <p>Assign reports to your staff members</p>
+                    
+                    <div class="form-group">
+                        <input type="text" placeholder="Search reports..." id="report-search">
+                    </div>
+                    
+                    <div id="unassigned-reports">
+                        <!-- Unassigned reports will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Budget Management Tab -->
+            <div id="budget-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-money-bill-wave"></i> Budget Management</h3>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card blue">
+                            <i class="fas fa-wallet fa-2x"></i>
+                            <div class="stat-number">₹200,000</div>
+                            <div>Allocated Budget</div>
+                        </div>
+                        
+                        <div class="stat-card orange">
+                            <i class="fas fa-money-bill-wave fa-2x"></i>
+                            <div class="stat-number">₹82,500</div>
+                            <div>Budget Used</div>
+                        </div>
+                        
+                        <div class="stat-card green">
+                            <i class="fas fa-piggy-bank fa-2x"></i>
+                            <div class="stat-number">₹117,500</div>
+                            <div>Budget Remaining</div>
+                        </div>
+                    </div>
+                    
+                    <h4>Recent Expenses</h4>
+                    <div id="recent-expenses">
+                        <!-- Expenses will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Staff Management Tab -->
+            <div id="staff-management-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-users"></i> Staff Management</h3>
+                    
+                    <div id="staff-list">
+                        <!-- Staff members will be listed here -->
+                    </div>
+                    
+                    <button class="btn" onclick="addStaffMember()"><i class="fas fa-plus"></i> Add Staff Member</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-dashboard" class="page">
+            <h2>Admin Dashboard</h2>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchAdminTab('reports-overview-tab')">Reports Overview</div>
+                <div class="tab" onclick="switchAdminTab('budget-dashboard-tab')">Budget Dashboard</div>
+            </div>
+            
+            <!-- Reports Overview Tab -->
+            <div id="reports-overview-tab" class="tab-content active">
+                <div class="card">
+                    <h3><i class="fas fa-chart-bar"></i> City Reports Overview</h3>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card blue">
+                            <i class="fas fa-flag fa-2x"></i>
+                            <div class="stat-number">1,247</div>
+                            <div>Total Reports</div>
+                        </div>
+                        
+                        <div class="stat-card orange">
+                            <i class="fas fa-clock fa-2x"></i>
+                            <div class="stat-number">283</div>
+                            <div>Pending Resolution</div>
+                        </div>
+                        
+                        <div class="stat-card green">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                            <div class="stat-number">854</div>
+                            <div>Issues Resolved</div>
+                        </div>
+                        
+                        <div class="stat-card purple">
+                            <i class="fas fa-users fa-2x"></i>
+                            <div class="stat-number">5,432</div>
+                            <div>Active Users</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Reports by Ward</h4>
+                        <div id="reports-by-ward">
+                            <div class="form-group">
+                                <label>Ward 1 (215 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ward 2 (187 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ward 3 (142 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ward 4 (176 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 62%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ward 5 (198 reports)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 69%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Recent Reports</h4>
+                        <div id="admin-recent-reports">
+                            <!-- Recent reports will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Budget Dashboard Tab -->
+            <div id="budget-dashboard-tab" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-money-bill-wave"></i> City Budget Dashboard</h3>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card blue">
+                            <i class="fas fa-wallet fa-2x"></i>
+                            <div class="stat-number">₹5,000,000</div>
+                            <div>Total Allocated Budget</div>
+                        </div>
+                        
+                        <div class="stat-card orange">
+                            <i class="fas fa-money-bill-wave fa-2x"></i>
+                            <div class="stat-number">₹2,450,000</div>
+                            <div>Budget Used</div>
+                        </div>
+                        
+                        <div class="stat-card green">
+                            <i class="fas fa-piggy-bank fa-2x"></i>
+                            <div class="stat-number">₹2,550,000</div>
+                            <div>Budget Remaining</div>
+                        </div>
+                        
+                        <div class="stat-card purple">
+                            <i class="fas fa-percentage fa-2x"></i>
+                            <div class="stat-number">49%</div>
+                            <div>Budget Utilization</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Budget Allocation by Department</h4>
+                        <div id="budget-by-department">
+                            <div class="form-group">
+                                <label>Public Works (₹1,200,000)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 55%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Sanitation (₹800,000)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Transportation (₹950,000)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Parks & Recreation (₹650,000)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Other (₹1,400,000)</label>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Recent Major Expenses</h4>
+                        <div id="admin-recent-expenses">
+                            <!-- Recent expenses will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Report2Resolve - "Your Report, Our Action"</p>
+            <p>A citizen engagement platform for better cities</p>
+        </div>
+    </footer>
+
+    <script>
+        // This will store our data (in a real app, this would be in a database)
+        let currentUser = null;
+        let reports = [
+            {
+                id: 1,
+                type: "pothole",
+                location: "Main Street & 5th Avenue",
+                description: "Large pothole near the intersection causing traffic issues",
+                status: "in-progress",
+                date: "2023-09-10",
+                trackingId: "REP-20230910-001",
+                votes: 12,
+                supports: 8
+            },
+            {
+                id: 2,
+                type: "garbage",
+                location: "Central Park West",
+                description: "Garbage accumulation near the park entrance",
+                status: "submitted",
+                date: "2023-09-12",
+                trackingId: "REP-20230912-002",
+                votes: 5,
+                supports: 3
+            },
+            {
+                id: 3,
+                type: "streetlight",
+                location: "Oak Street",
+                description: "Streetlight not working making the area unsafe at night",
+                status: "done",
+                date: "2023-09-05",
+                trackingId: "REP-20230905-003",
+                votes: 21,
+                supports: 15
+            }
+        ];
+        
+        let tasks = [
+            {
+                id: 1,
+                title: "Pothole on Oak Avenue",
+                address: "Oak Avenue near City Park",
+                reported: "2023-09-12",
+                status: "assigned",
+                priority: "high"
+            },
+            {
+                id: 2,
+                title: "Garbage Collection",
+                address: "12th Street Block 4",
+                reported: "2023-09-14",
+                status: "in-progress",
+                priority: "medium"
+            }
+        ];
+        
+        let staffMembers = [
+            { id: 1, name: 'Raj Sharma', role: 'Field Worker', assignedTasks: 5, availability: 'Available' },
+            { id: 2, name: 'Priya Patel', role: 'Field Worker', assignedTasks: 3, availability: 'Available' },
+            { id: 3, name: 'Amit Kumar', role: 'Senior Field Worker', assignedTasks: 8, availability: 'Busy' }
+        ];
+        
+        let wardBudget = {
+            allocated: 200000,
+            used: 82500,
+            remaining: 117500
+        };
+        
+        let expenses = [
+            { id: 1, report: 'Pothole Repair', amount: 5000, date: '2023-09-10', staff: 'Raj Sharma' },
+            { id: 2, report: 'Garbage Collection', amount: 2500, date: '2023-09-12', staff: 'Priya Patel' },
+            { id: 3, report: 'Streetlight Repair', amount: 3200, date: '2023-09-15', staff: 'Amit Kumar' }
+        ];
+        
+        // Function to show a specific page
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // Function to handle login
+        function login(role) {
+            currentUser = { role: role, name: role.charAt(0).toUpperCase() + role.slice(1) };
+            
+            // Show the appropriate dashboard based on role
+            if (role === 'citizen') {
+                showPage('citizen-dashboard');
+                refreshReportsList();
+            } else if (role === 'staff') {
+                showPage('staff-dashboard');
+                refreshTasksList();
+            } else if (role === 'councillor') {
+                showPage('councillor-dashboard');
+                refreshUnassignedReports();
+                refreshStaffList();
+                refreshBudgetData();
+            } else if (role === 'admin') {
+                showPage('admin-dashboard');
+                refreshAdminReports();
+                refreshAdminBudget();
+            } else {
+                // For other roles, show citizen dashboard as default
+                showPage('citizen-dashboard');
+                refreshReportsList();
+            }
+        }
+        
+        // Function to switch tabs in the citizen dashboard
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find and activate the tab button
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.textContent.toLowerCase().includes(tabId.split('-')[0])) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Refresh data if needed
+            if (tabId === 'my-reports-tab') {
+                refreshReportsList();
+            } else if (tabId === 'city-issues-tab') {
+                refreshCityIssuesList();
+            }
+        }
+        
+        // Function to switch tabs in the councillor dashboard
+        function switchCouncillorTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('#councillor-dashboard .tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('#councillor-dashboard .tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find and activate the tab button
+            document.querySelectorAll('#councillor-dashboard .tab').forEach(tab => {
+                if (tab.textContent.toLowerCase().includes(tabId.split('-')[0])) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Refresh data if needed
+            if (tabId === 'assignment-panel-tab') {
+                refreshUnassignedReports();
+            } else if (tabId === 'staff-management-tab') {
+                refreshStaffList();
+            } else if (tabId === 'budget-tab') {
+                refreshBudgetData();
+            }
+        }
+        
+        // Function to switch tabs in the admin dashboard
+        function switchAdminTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('#admin-dashboard .tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('#admin-dashboard .tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find and activate the tab button
+            document.querySelectorAll('#admin-dashboard .tab').forEach(tab => {
+                if (tab.textContent.toLowerCase().includes(tabId.split('-')[0])) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Refresh data if needed
+            if (tabId === 'reports-overview-tab') {
+                refreshAdminReports();
+            } else if (tabId === 'budget-dashboard-tab') {
+                refreshAdminBudget();
+            }
+        }
+        
+        // Function to get user's location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        
+        function showPosition(position) {
+            // In a real app, we would convert coordinates to a readable address
+            document.getElementById('issue-location').value = 
+                "Lat: " + position.coords.latitude.toFixed(4) + ", Lng: " + position.coords.longitude.toFixed(4);
+        }
+        
+        // Function to submit a new report
+        function submitReport() {
+            const type = document.getElementById('issue-type').value;
+            const location = document.getElementById('issue-location').value;
+            const description = document.getElementById('issue-description').value;
+            const photo = document.getElementById('issue-photo').files[0];
+            
+            if (!type || !location || !description) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+            
+            // Create a new report (in a real app, this would be sent to a server)
+            const newReport = {
+                id: reports.length + 1,
+                type: type,
+                location: location,
+                description: description,
+                status: "submitted",
+                date: new Date().toISOString().split('T')[0],
+                trackingId: generateTrackingId(),
+                votes: 0,
+                supports: 0
+            };
+            
+            reports.push(newReport);
+            
+            alert("Report submitted successfully! Your tracking ID is: " + newReport.trackingId);
+            
+            // Clear the form
+            document.getElementById('issue-type').value = "";
+            document.getElementById('issue-location').value = "";
+            document.getElementById('issue-description').value = "";
+            document.getElementById('issue-photo').value = "";
+            
+            // Switch to the My Reports tab
+            switchTab('my-reports-tab');
+            
+            // Refresh the reports list
+            refreshReportsList();
+        }
+        
+        // Generate a tracking ID
+        function generateTrackingId() {
+            const now = new Date();
+            const dateStr = now.getFullYear() + 
+                           String(now.getMonth() + 1).padStart(2, '0') + 
+                           String(now.getDate()).padStart(2, '0');
+            const randomStr = Math.random().toString(36).substring(2, 5).toUpperCase();
+            return "REP-" + dateStr + "-" + randomStr;
+        }
+        
+        // Function to refresh the reports list
+        function refreshReportsList() {
+            const reportsList = document.getElementById('my-reports-list');
+            reportsList.innerHTML = "";
+            
+            if (reports.length === 0) {
+                reportsList.innerHTML = "<p>You haven't submitted any reports yet.</p>";
+                return;
+            }
+            
+            reports.forEach(report => {
+                const reportElement = document.createElement('div');
+                reportElement.className = 'issue-card';
+                
+                let statusClass = 'status-submitted';
+                let statusText = 'Submitted';
+                
+                if (report.status === 'in-progress') {
+                    statusClass = 'status-progress';
+                    statusText = 'In Progress';
+                } else if (report.status === 'done') {
+                    statusClass = 'status-done';
+                    statusText = 'Done';
+                } else if (report.status === 'closed') {
+                    statusClass = 'status-closed';
+                    statusText = 'Closed';
+                }
+                
+                reportElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4>${report.type.charAt(0).toUpperCase() + report.type.slice(1)} at ${report.location}</h4>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <p>${report.description}</p>
+                    <p><strong>Submitted on:</strong> ${report.date}</p>
+                    <p><strong>Tracking ID:</strong> ${report.trackingId}</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-thumbs-up"></i> Vote (${report.votes})</button>
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-users"></i> Support (${report.supports})</button>
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-share-alt"></i> Share</button>
+                    </div>
+                `;
+                
+                reportsList.appendChild(reportElement);
+            });
+        }
+        
+        // Function to refresh the city issues list
+        function refreshCityIssuesList() {
+            const issuesList = document.getElementById('city-issues-list');
+            issuesList.innerHTML = "";
+            
+            reports.forEach(report => {
+                const issueElement = document.createElement('div');
+                issueElement.className = 'issue-card';
+                
+                let statusClass = 'status-submitted';
+                let statusText = 'Submitted';
+                
+                if (report.status === 'in-progress') {
+                    statusClass = 'status-progress';
+                    statusText = 'In Progress';
+                } else if (report.status === 'done') {
+                    statusClass = 'status-done';
+                    statusText = 'Done';
+                } else if (report.status === 'closed') {
+                    statusClass = 'status-closed';
+                    statusText = 'Closed';
+                }
+                
+                issueElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4>${report.type.charAt(0).toUpperCase() + report.type.slice(1)} at ${report.location}</h4>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <p>${report.description}</p>
+                    <p><strong>Submitted on:</strong> ${report.date}</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-thumbs-up"></i> Vote (${report.votes})</button>
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-users"></i> Support (${report.supports})</button>
+                    </div>
+                `;
+                
+                issuesList.appendChild(issueElement);
+            });
+        }
+        
+        // Function to refresh the tasks list for staff
+        function refreshTasksList() {
+            const tasksList = document.getElementById('staff-tasks');
+            tasksList.innerHTML = "";
+            
+            tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'issue-card';
+                
+                let priorityBadge = '';
+                if (task.priority === 'high') {
+                    priorityBadge = '<span class="status-badge status-progress">High Priority</span>';
+                }
+                
+                taskElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4>${task.title}</h4>
+                        ${priorityBadge}
+                    </div>
+                    <p><strong>Address:</strong> ${task.address}</p>
+                    <p><strong>Reported on:</strong> ${task.reported}</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-play-circle"></i> Start Work</button>
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-camera"></i> Upload Photos</button>
+                        <button class="btn" style="padding: 8px 15px;"><i class="fas fa-check-circle"></i> Mark Complete</button>
+                    </div>
+                `;
+                
+                tasksList.appendChild(taskElement);
+            });
+        }
+        
+        // Function to refresh unassigned reports for councillor
+        function refreshUnassignedReports() {
+            const unassignedReportsDiv = document.getElementById('unassigned-reports');
+            unassignedReportsDiv.innerHTML = '';
+            
+            // Filter unassigned reports
+            const unassigned = reports.filter(report => report.status === 'submitted' || report.status === 'acknowledged');
+            
+            if (unassigned.length === 0) {
+                unassignedReportsDiv.innerHTML = '<p>No unassigned reports at this time.</p>';
+                return;
+            }
+            
+            unassigned.forEach(report => {
+                const reportElement = document.createElement('div');
+                reportElement.className = 'assignment-card';
+                reportElement.innerHTML = `
+                    <div>
+                        <h4>${report.type} at ${report.location}</h4>
+                        <p>${report.description}</p>
+                        <p><strong>Reported:</strong> ${report.date}</p>
+                    </div>
+                    <div>
+                        <select id="staff-select-${report.id}">
+                            <option value="">Select Staff</option>
+                            <option value="staff1">Raj Sharma</option>
+                            <option value="staff2">Priya Patel</option>
+                            <option value="staff3">Amit Kumar</option>
+                        </select>
+                        <button class="btn" onclick="assignReport(${report.id})">Assign</button>
+                    </div>
+                `;
+                unassignedReportsDiv.appendChild(reportElement);
+            });
+        }
+        
+        // Function to assign a report to staff
+        function assignReport(reportId) {
+            const staffSelect = document.getElementById(`staff-select-${reportId}`);
+            const staffId = staffSelect.value;
+            
+            if (!staffId) {
+                alert('Please select a staff member');
+                return;
+            }
+            
+            // Update report status
+            const reportIndex = reports.findIndex(r => r.id === reportId);
+            if (reportIndex !== -1) {
+                reports[reportIndex].status = 'assigned';
+                reports[reportIndex].assignedTo = staffId;
+                
+                alert('Report assigned successfully!');
+                refreshUnassignedReports();
+            }
+        }
+        
+        // Function to refresh staff list for councillor
+        function refreshStaffList() {
+            const staffListDiv = document.getElementById('staff-list');
+            staffListDiv.innerHTML = '';
+            
+            staffMembers.forEach(staff => {
+                const staffElement = document.createElement('div');
+                staffElement.className = 'staff-member-card';
+                staffElement.innerHTML = `
+                    <div>
+                        <h4>${staff.name}</h4>
+                        <p>${staff.role} • ${staff.assignedTasks} tasks assigned</p>
+                    </div>
+                    <div>
+                        <span class="status-badge ${staff.availability === 'Available' ? 'status-done' : 'status-progress'}">
+                            ${staff.availability}
+                        </span>
+                        <button class="btn">View Details</button>
+                    </div>
+                `;
+                staffListDiv.appendChild(staffElement);
+            });
+        }
+        
+        // Function to refresh budget data for councillor
+        function refreshBudgetData() {
+            const expensesDiv = document.getElementById('recent-expenses');
+            expensesDiv.innerHTML = '';
+            
+            expenses.forEach(expense => {
+                const expenseElement = document.createElement('div');
+                expenseElement.className = 'expense-item';
+                expenseElement.innerHTML = `
+                    <div>
+                        <strong>${expense.report}</strong>
+                        <p>By ${expense.staff} on ${expense.date}</p>
+                    </div>
+                    <div>
+                        <span>₹${expense.amount.toLocaleString()}</span>
+                    </div>
+                `;
+                expensesDiv.appendChild(expenseElement);
+            });
+        }
+        
+        // Function to refresh admin reports
+        function refreshAdminReports() {
+            const recentReportsDiv = document.getElementById('admin-recent-reports');
+            recentReportsDiv.innerHTML = '';
+            
+            // Get the 5 most recent reports
+            const recentReports = [...reports].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+            
+            recentReports.forEach(report => {
+                const reportElement = document.createElement('div');
+                reportElement.className = 'issue-card';
+                
+                let statusClass = 'status-submitted';
+                let statusText = 'Submitted';
+                
+                if (report.status === 'in-progress') {
+                    statusClass = 'status-progress';
+                    statusText = 'In Progress';
+                } else if (report.status === 'done') {
+                    statusClass = 'status-done';
+                    statusText = 'Done';
+                } else if (report.status === 'closed') {
+                    statusClass = 'status-closed';
+                    statusText = 'Closed';
+                }
+                
+                reportElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4>${report.type.charAt(0).toUpperCase() + report.type.slice(1)} at ${report.location}</h4>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <p>${report.description}</p>
+                    <p><strong>Submitted on:</strong> ${report.date} | <strong>Tracking ID:</strong> ${report.trackingId}</p>
+                `;
+                
+                recentReportsDiv.appendChild(reportElement);
+            });
+        }
+        
+        // Function to refresh admin budget data
+        function refreshAdminBudget() {
+            const expensesDiv = document.getElementById('admin-recent-expenses');
+            expensesDiv.innerHTML = '';
+            
+            // Sample city-level expenses
+            const cityExpenses = [
+                { id: 1, department: 'Public Works', project: 'Road Repairs Phase 2', amount: 125000, date: '2023-09-18' },
+                { id: 2, department: 'Sanitation', project: 'Waste Management Upgrade', amount: 85000, date: '2023-09-15' },
+                { id: 3, department: 'Transportation', project: 'Traffic Signal Maintenance', amount: 45000, date: '2023-09-12' },
+                { id: 4, department: 'Parks & Recreation', project: 'Park Renovation', amount: 75000, date: '2023-09-10' },
+                { id: 5, department: 'Public Works', project: 'Drainage System Repair', amount: 95000, date: '2023-09-05' }
+            ];
+            
+            cityExpenses.forEach(expense => {
+                const expenseElement = document.createElement('div');
+                expenseElement.className = 'expense-item';
+                expenseElement.innerHTML = `
+                    <div>
+                        <strong>${expense.project}</strong>
+                        <p>${expense.department} • ${expense.date}</p>
+                    </div>
+                    <div>
+                        <span>₹${expense.amount.toLocaleString()}</span>
+                    </div>
+                `;
+                expensesDiv.appendChild(expenseElement);
+            });
+        }
+        
+        // Function to add a staff member
+        function addStaffMember() {
+            const name = prompt('Enter staff member name:');
+            if (name) {
+                const newStaff = {
+                    id: staffMembers.length + 1,
+                    name: name,
+                    role: 'Field Worker',
+                    assignedTasks: 0,
+                    availability: 'Available'
+                };
+                staffMembers.push(newStaff);
+                alert(`Staff member ${name} added successfully!`);
+                refreshStaffList();
+            }
+        }
+        
+        // Initialize the app with some sample data
+        window.onload = function() {
+            // Add some sample recent activity
+            const activity = [
+                { action: "Pothole on Main Street marked as completed", time: "2 hours ago" },
+                { action: "New garbage accumulation report in Central Park", time: "5 hours ago" },
+                { action: "Water leakage issue assigned to Team B", time: "Yesterday" },
+                { action: "Streetlight repair on Oak Street verified by citizen", time: "2 days ago" }
+            ];
+            
+            const activityList = document.getElementById('recent-activity');
+            activity.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'issue-card';
+                div.innerHTML = `<p>${item.action} <span style="color: #777;">- ${item.time}</span></p>`;
+                activityList.appendChild(div);
+            });
+            
+            // Initialize the councillor dashboard if needed
+            refreshUnassignedReports();
+            refreshStaffList();
+            refreshBudgetData();
+            
+            // Initialize the admin dashboard if needed
+            refreshAdminReports();
+            refreshAdminBudget();
+        };
+    </script>
+</body>
+</html>
